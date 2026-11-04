@@ -1,0 +1,194 @@
+/* Menú principal de MayBuy (sin Shadow DOM: todo empieza por menu-principal) */
+
+menu-principal {
+    --tinta: #16161d;
+    --suave: #6b6b78;
+    --linea: #ececf0;
+    --acento: #c2410c;
+    display: block;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+menu-principal button {
+    font: inherit;
+    cursor: pointer;
+}
+
+/* Barra de arriba */
+menu-principal .barra {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 64px;
+    padding: 0 1.25rem;
+    background: #fff;
+    border-bottom: 1px solid var(--linea);
+}
+
+menu-principal .abrir {
+    padding: .5rem 1.1rem;
+    border: 1.5px solid var(--tinta);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--tinta);
+    font-weight: 600;
+}
+
+menu-principal .abrir:hover {
+    background: var(--tinta);
+    color: #fff;
+}
+
+menu-principal .logo {
+    color: var(--tinta);
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+menu-principal .carrito {
+    margin-left: auto;
+    color: var(--tinta);
+    font-weight: 600;
+}
+
+/* Fondo oscuro y panel lateral (ocultos hasta que el menú tiene la clase "abierto") */
+menu-principal .fondo {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    background: rgb(0 0 0 / .35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s;
+}
+
+menu-principal .panel {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 31;
+    box-sizing: border-box;
+    width: min(360px, 90vw);
+    padding: 1rem 1rem 2rem;
+    overflow-y: auto;
+    background: #fff;
+    transform: translateX(-100%);
+    transition: transform .3s ease;
+}
+
+menu-principal.abierto .fondo {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+menu-principal.abierto .panel {
+    transform: none;
+}
+
+menu-principal .cerrar {
+    display: block;
+    width: 36px;
+    height: 36px;
+    margin-left: auto;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: var(--tinta);
+    font-size: 1.1rem;
+}
+
+menu-principal .cerrar:hover {
+    background: #f5f5f7;
+}
+
+menu-principal .panel h2 {
+    margin: .25rem 0 .75rem;
+    color: var(--acento);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+menu-principal .panel h2 ~ h2 {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--linea);
+}
+
+menu-principal .flecha {
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+/* Tarjetas destacadas: cada una lleva a la lista de su sección */
+menu-principal .destacado {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    width: 100%;
+    margin-bottom: .5rem;
+    padding: .85rem 1rem;
+    border: 0;
+    border-radius: 10px;
+    background: linear-gradient(110deg, #7c2d12, #c2410c);
+    color: #fff;
+    text-align: left;
+}
+
+menu-principal .destacado:hover {
+    filter: brightness(1.12);
+}
+
+menu-principal .destacado .texto {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+menu-principal .destacado strong {
+    font-size: 1.05rem;
+}
+
+menu-principal .destacado small {
+    font-size: .8rem;
+    opacity: .85;
+}
+
+/* Catálogo: todos los juegos y cada plataforma */
+menu-principal .categorias {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+menu-principal .categorias button {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    width: 100%;
+    padding: .8rem .25rem;
+    border: 0;
+    background: none;
+    color: var(--tinta);
+    font-weight: 600;
+    text-align: left;
+}
+
+menu-principal .categorias button:hover {
+    color: var(--acento);
+}
+
+menu-principal .categorias span:first-child {
+    flex: 1;
+}
+
+menu-principal .categorias small,
+menu-principal .categorias .flecha {
+    color: var(--suave);
+    font-weight: 400;
+}
+
+menu-principal :focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 2px;
+}

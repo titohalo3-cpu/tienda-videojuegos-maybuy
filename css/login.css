@@ -1,0 +1,17 @@
+.oculto{
+
+
+    display: none;
+
+
+
+}
+
+.visible{
+    display: block;
+}
+
+.error {
+    color: red;
+    font-size: 0.85rem;
+}

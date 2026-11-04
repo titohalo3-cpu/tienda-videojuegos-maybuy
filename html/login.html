@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MayBuy</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <script src="../js/login.js"></script>
+</head>
+<body>
+    <form>
+        <label for="idusuario">Email:</label>
+        <input type="email" name="idusuario" id="idusuario" required>
+        <span id="errorEmail" class="error"></span>
+        <br>
+        <label for="claveusuario">Clave:</label>
+        <input type="password" name="claveusuario" id="claveusuario" required>
+        <span id="errorClave" class="error"></span>
+        <br>
+        <button type="button" id="registro">Entrar</button>
+        <div id="mensajeError" class="oculto">El email o la contraseña no son correctos</div>
+    </form>
+</body>
+</html>

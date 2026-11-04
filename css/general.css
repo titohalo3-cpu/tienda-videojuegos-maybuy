@@ -1,0 +1,11 @@
+/* Estilos comunes a las páginas de la tienda */
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: #16161d;
+    background: #fafafa;
+}
+
+main {
+    padding: 2rem 1.25rem;
+}
