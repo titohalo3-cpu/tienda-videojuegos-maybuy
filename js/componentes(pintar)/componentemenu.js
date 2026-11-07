@@ -1,4 +1,4 @@
-import { SECCIONES } from './modulojuegos.js';
+import { SECCIONES } from '../modulo(logica)/modulojuegos.js';
 
 class MenuPrincipal extends HTMLElement {
     constructor() {
@@ -60,13 +60,9 @@ class MenuPrincipal extends HTMLElement {
         this.className = "";
     }
 
-    // Le dice a la lista qué sección tiene que mostrar cambiando su atributo
+    // De momento solo cierra el menú; aquí se llamará a la función que pinte la lista de esa sección
     irA(seccion) {
-        let lista = document.getElementsByTagName("lista-juegos")[0];
-        if (lista) {
-            lista.setAttribute("plataforma", "");
-            lista.setAttribute("seccion", seccion);
-        }
+        console.log("Sección elegida:", seccion);
         this.cerrar();
     }
 
