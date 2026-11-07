@@ -70,6 +70,17 @@ Estás importando un nombre que no tiene `export` en el otro archivo, o está ma
 - Porque es el navegador quien crea el objeto al encontrar la etiqueta en el HTML, y no le pasa nada.
 - Los campos empiezan con un valor inicial y se rellenan después con atributos (`observedAttributes`).
 
+**¿Qué diferencia hay entre un campo (`this.titulo`) y una variable (`let titulo`)?**
+- `let titulo` es una variable **local**: solo existe dentro de la función donde se crea y desaparece al terminar.
+- `this.titulo` es un **campo del objeto**: se guarda en el objeto y lo pueden usar todos sus métodos (`template`, `pintar`...).
+- Los campos se crean en el **constructor** con `this.campo = valorInicial`.
+
+**¿Qué diferencia hay entre un campo y un atributo?**
+- El **atributo** está en el HTML (`<menu-principal carrito="3">`) y siempre es texto. Se lee con `this.getAttribute("carrito")`.
+- El **campo** está en el objeto de JS (`this.carrito`).
+- `observedAttributes` + `attributeChangedCallback` sirven para copiar el atributo al campo cuando cambia.
+- Solo se observan atributos que pueden venir del HTML. Una función (`alElegir`) no puede ser un atributo.
+
 **¿Qué hace `connectedCallback`?**
 - El navegador lo ejecuta solo cuando la etiqueta entra en la página. Ahí se pinta.
 - El constructor prepara los campos; `connectedCallback` pinta.
