@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MayBuy · Tu carrito</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=swap">
+    <link rel="stylesheet" href="../css/detalle.css">
+    <link rel="stylesheet" href="../css/carrito.css">
+    <script type="module" src="../js/mains/maincarrito.js"></script>
+</head>
+<body>
+    <header class="cabecera">
+        <span class="marca"><span class="marca__sello" aria-hidden="true">M</span>MayBuy</span>
+        <div class="cabecera__botones">
+            <a class="volver" href="./cliente.html">← Seguir comprando</a>
+            <button class="volver" id="botonSalir">Cerrar sesión</button>
+        </div>
+    </header>
+
+    <main class="pagina-carrito">
+        <h1 class="carrito__titulo">Tu carrito <span id="saludo"></span></h1>
+
+        <!-- Mensaje después de comprar -->
+        <section class="confirmacion" id="confirmacion" hidden aria-live="polite"></section>
+
+        <div class="carrito__cuerpo">
+            <!-- Una línea por cada juego del carrito -->
+            <ul class="lineas" id="lineas"></ul>
+
+            <!-- Resumen y botón de compra -->
+            <aside class="resumen">
+                <h2>Resumen</h2>
+                <dl>
+                    <div><dt>Juegos</dt><dd id="resumenCantidad">0</dd></div>
+                    <div class="resumen__total"><dt>Total</dt><dd id="resumenTotal">0 €</dd></div>
+                </dl>
+                <button class="boton-comprar" id="botonComprar">Finalizar compra</button>
+                <p class="resumen__nota">Los juegos se descuentan del stock al comprar.</p>
+            </aside>
+        </div>
+
+        <!-- Historial: las compras anteriores de este cliente (la relación cliente ↔ juegos) -->
+        <section class="historial">
+            <h2>Tus compras</h2>
+            <ol class="compras" id="compras"></ol>
+        </section>
+    </main>
+</body>
+</html>

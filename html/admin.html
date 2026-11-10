@@ -4,13 +4,130 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MayBuy · Administración</title>
-    <link rel="stylesheet" href="../css/general.css">
-    <script type="module" src="../js/componente.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=swap">
+    <link rel="stylesheet" href="../css/detalle.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <script type="module" src="../js/mains/mainadmin.js"></script>
 </head>
 <body>
-    <menu-principal carrito="0"></menu-principal>
-    <main>
-        <h1>Panel de administración</h1>
+    <header class="cabecera">
+        <span class="marca"><span class="marca__sello" aria-hidden="true">M</span>MayBuy <span class="marca__rol">Admin</span></span>
+        <div class="cabecera__botones">
+            <a class="volver" href="./clientes.html">Clientes</a>
+            <a class="volver" href="./estadisticas.html">Estadísticas</a>
+            <button class="volver" id="botonRestaurar">Restaurar catálogo</button>
+            <button class="volver" id="botonSalir">Cerrar sesión</button>
+        </div>
+    </header>
+
+    <!-- CONSULTAR: ficha del juego elegido (la misma que ve el cliente) -->
+    <main class="ficha">
+        <section class="vitrina" aria-label="Caja del juego">
+            <div class="escena" id="escena" tabindex="0" aria-label="Caja en 3D. Arrastra o usa las flechas para girarla">
+                <div class="caja" id="caja"></div>
+            </div>
+            <div class="vistas" role="group" aria-label="Ver la caja por">
+                <button class="vista activa" data-angulo="0">Portada</button>
+                <button class="vista" data-angulo="90">Lomo</button>
+                <button class="vista" data-angulo="180">Contraportada</button>
+            </div>
+        </section>
+        <section class="datos" id="datos" aria-live="polite"></section>
     </main>
+
+    <!-- ALTA y MODIFICAR: el mismo formulario para las dos cosas -->
+    <section class="gestion" id="gestion">
+        <h2 id="tituloFormulario">Nuevo juego</h2>
+
+        <form class="formulario" id="formJuego">
+            <input type="hidden" id="idJuego">
+
+            <label class="campo campo--ancho">Título
+                <input name="titulo" required>
+            </label>
+
+            <label class="campo">Plataforma
+                <select name="plataforma" required>
+                    <option value="PS5">PS5</option>
+                    <option value="PS4">PS4</option>
+                    <option value="Switch">Switch</option>
+                    <option value="Switch 2">Switch 2</option>
+                    <option value="Xbox Series">Xbox Series</option>
+                    <option value="PC">PC</option>
+                </select>
+            </label>
+
+            <label class="campo">Género
+                <select name="genero" required>
+                    <option value="Acción">Acción</option>
+                    <option value="Aventura">Aventura</option>
+                    <option value="Carreras">Carreras</option>
+                    <option value="Deportes">Deportes</option>
+                    <option value="Plataformas">Plataformas</option>
+                    <option value="RPG">RPG</option>
+                    <option value="Sandbox">Sandbox</option>
+                    <option value="Shooter">Shooter</option>
+                    <option value="Simulación">Simulación</option>
+                </select>
+            </label>
+
+            <label class="campo">Desarrolladora
+                <input name="desarrolladora" required>
+            </label>
+
+            <label class="campo">Lanzamiento
+                <input name="fechaLanzamiento" type="date" required>
+            </label>
+
+            <label class="campo">PEGI
+                <select name="pegi">
+                    <option value="3">3</option>
+                    <option value="7">7</option>
+                    <option value="12">12</option>
+                    <option value="16">16</option>
+                    <option value="18">18</option>
+                </select>
+            </label>
+
+            <label class="campo">Precio nuevo (€)
+                <input name="precioNuevo" type="number" min="0" step="0.01" required>
+            </label>
+
+            <label class="campo">Stock nuevo
+                <input name="stockNuevo" type="number" min="0" step="1" required>
+            </label>
+
+            <label class="campo">Precio 2.ª mano (€)
+                <input name="precioSegundaMano" type="number" min="0" step="0.01" required>
+            </label>
+
+            <label class="campo">Stock 2.ª mano
+                <input name="stockSegundaMano" type="number" min="0" step="1" required>
+            </label>
+
+            <label class="campo campo--ancho">Sinopsis
+                <textarea name="descripcion"></textarea>
+            </label>
+
+            <div class="acciones">
+                <button type="submit" class="principal">Guardar</button>
+                <button type="reset" id="botonCancelar">Cancelar</button>
+                <button type="button" class="peligro" id="botonEliminar" hidden>Eliminar</button>
+            </div>
+        </form>
+
+        <p class="aviso" id="aviso"></p>
+    </section>
+
+    <!-- Todos los juegos: al pulsar uno se ve su ficha arriba -->
+    <section class="catalogo">
+        <div class="catalogo__cabecera">
+            <h2>Todos los juegos</h2>
+            <input class="buscador" id="buscador" type="search" placeholder="Buscar por título" aria-label="Buscar por título">
+        </div>
+        <ul class="rejilla" id="rejilla"></ul>
+    </section>
 </body>
 </html>

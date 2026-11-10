@@ -11,39 +11,6 @@
     "ultimoAcceso": "2026-10-17T19:42:00"
   },
   {
-    "id": 2,
-    "rol": "trabajador",
-    "nombre": "Sergio",
-    "apellidos": "Ortega Ramos",
-    "email": "sergio@checkpoint.es",
-    "clave": "Trabajo123!",
-    "activo": true,
-    "fechaAlta": "2026-05-15",
-    "ultimoAcceso": "2026-10-18T13:05:00"
-  },
-  {
-    "id": 3,
-    "rol": "trabajador",
-    "nombre": "Elena",
-    "apellidos": "Campos Vidal",
-    "email": "elena@checkpoint.es",
-    "clave": "Trabajo123!",
-    "activo": true,
-    "fechaAlta": "2026-05-15",
-    "ultimoAcceso": "2026-10-16T18:20:00"
-  },
-  {
-    "id": 4,
-    "rol": "trabajador",
-    "nombre": "Diego",
-    "apellidos": "Prieto León",
-    "email": "diego@checkpoint.es",
-    "clave": "Trabajo123!",
-    "activo": false,
-    "fechaAlta": "2026-05-15",
-    "ultimoAcceso": "2026-07-30T10:00:00"
-  },
-  {
     "id": 5,
     "rol": "cliente",
     "nombre": "Lucía",
@@ -60,6 +27,7 @@
     "esSocio": true,
     "fechaAltaSocio": "2025-11-03",
     "puntos": 105
+
   },
   {
     "id": 6,

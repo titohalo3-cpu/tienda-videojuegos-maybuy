@@ -1,17 +1,438 @@
-.oculto{
+/* Login de MayBuy: estilo "Kansō" (fondo hueso, titular en dos tonos y túnel de carátulas) */
 
-
-    display: none;
-
-
-
+:root {
+    --fondo: #ecebe6;
+    --superficie: #f6f5f1;
+    --hundido: #e1e0da;
+    --hundido-2: #d6d5cf;
+    --texto: #111111;
+    --texto-2: #5a5853;
+    --texto-tenue: #8b8984;
+    --acento: #ff4a1c;
+    --error: #c81e1e;
+    --curva: cubic-bezier(.16, 1, .3, 1);
+    --margen: clamp(16px, 4vw, 40px);
 }
 
-.visible{
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100svh;
+    margin: 0;
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: Geist, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-variant-numeric: tabular-nums;
+    overflow-x: hidden;
+}
+
+/* Cabecera */
+.cabecera {
+    padding: 20px var(--margen);
+}
+
+.marca {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+}
+
+.marca__sello {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--acento);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+/* Hero: titular arriba y, en el centro, el login delante del túnel */
+.hero {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: clamp(8px, 2vh, 24px);
+}
+
+.hero__texto {
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    padding: 0 var(--margen);
+    text-align: center;
+}
+
+.hero__titulo {
+    margin: 0;
+    font-size: clamp(3.4rem, 10vw, 8.5rem);
+    font-weight: 500;
+    line-height: 0.9;
+    letter-spacing: -0.06em;
+    white-space: nowrap;
+}
+
+.hero__tenue {
+    color: var(--texto-tenue);
+}
+
+.hero__entrada {
+    max-width: 46ch;
+    margin: 0;
+    color: var(--texto-2);
+    line-height: 1.5;
+}
+
+/* Las letras del titular suben una a una */
+.palabra {
+    display: inline-block;
+    overflow: hidden;
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
+    vertical-align: top;
+}
+
+.letra {
+    display: inline-block;
+    animation: subir 1s var(--curva) both;
+    animation-delay: calc(var(--i) * 60ms + 100ms);
+}
+
+@keyframes subir {
+    from { transform: translateY(105%); }
+    to { transform: translateY(0); }
+}
+
+/* Escena: el túnel ocupa todo el ancho y el formulario va encima, centrado */
+.escena {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 420px;
+    padding: 24px var(--margen);
+}
+
+.tunel {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    perspective: 900px;
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
+}
+
+.tunel.arrastrando {
+    cursor: grabbing;
+}
+
+.tunel__anillo {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    transform-style: preserve-3d;
+}
+
+/* Carátula: franja de la plataforma arriba, color del género y título abajo */
+.caratula {
+    --ancho: clamp(96px, 11vw, 150px);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    width: var(--ancho);
+    aspect-ratio: 2 / 3;
+    margin: calc(var(--ancho) * -0.75) 0 0 calc(var(--ancho) * -0.5);
+    overflow: hidden;
+    border-radius: 6px;
+    background: var(--color-genero, #444);
+    color: #fff;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+}
+
+.caratula__plataforma {
+    padding: 5px 8px;
+    background: var(--color-plataforma, #111);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.caratula__arte {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Dibujo abstracto: un círculo y una barra con la inicial, distinto en cada juego */
+.caratula__arte::before {
+    content: "";
+    position: absolute;
+    width: 120%;
+    aspect-ratio: 1;
+    left: var(--x, -10%);
+    top: var(--y, 10%);
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.14);
+}
+
+.caratula__inicial {
+    position: absolute;
+    right: 8px;
+    top: 4px;
+    font-size: calc(var(--ancho) * 0.62);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    color: rgb(255 255 255 / 0.22);
+}
+
+.caratula__titulo {
+    padding: 22px 8px 8px;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.55), transparent);
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+}
+
+.caratula__genero {
     display: block;
+    margin-top: 2px;
+    font-size: 0.6rem;
+    font-weight: 400;
+    opacity: 0.8;
 }
 
-.error {
-    color: red;
+/* Portada real (de Steam) encima de la carátula dibujada */
+.caratula__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: var(--hundido);
+    pointer-events: none;
+}
+
+/* Formulario de acceso */
+.acceso {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: 14px;
+    width: min(100%, 360px);
+    padding: 26px 24px 24px;
+    border-radius: 22px;
+    background: var(--superficie);
+    box-shadow: 0 30px 60px -30px rgb(17 17 17 / 0.35);
+}
+
+.acceso__titulo {
+    margin: 0 0 4px;
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+}
+
+.campo {
+    display: grid;
+    gap: 6px;
+}
+
+.campo label {
     font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.campo input {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 16px;
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background: var(--hundido);
+    color: var(--texto);
+    font: inherit;
+    transition: border-color .2s, background-color .2s;
+}
+
+.campo input::placeholder {
+    color: var(--texto-tenue);
+}
+
+.campo input:focus {
+    outline: none;
+    border-color: var(--texto);
+    background: #fff;
+}
+
+.acceso__boton {
+    min-height: 48px;
+    margin-top: 6px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--texto);
+    color: #fff;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color .2s, transform .4s var(--curva);
+}
+
+.acceso__boton:hover {
+    background: var(--acento);
+}
+
+.acceso__boton:active {
+    transform: scale(0.98);
+}
+
+.acceso__boton:focus-visible,
+.pausa:focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 3px;
+}
+
+/* "Recordar mi email" (cookie) y enlace a registro */
+.recordar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--texto-2);
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.recordar input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--texto);
+}
+
+.acceso__alternativa {
+    margin: 0;
+    color: var(--texto-2);
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.acceso__alternativa a {
+    color: var(--texto);
+    font-weight: 600;
+}
+
+/* Mensajes de error (las clases las pone login.js) */
+.error {
+    min-height: 0;
+    color: var(--error);
+    font-size: 0.8rem;
+}
+
+.error:empty {
+    display: none;
+}
+
+.oculto {
+    display: none;
+}
+
+.visible {
+    display: block;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: #fbe4e1;
+    color: var(--error);
+    font-size: 0.85rem;
+}
+
+/* Pie: pista, pausa y números del catálogo */
+.pie {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 12px var(--margen) 20px;
+    font-size: 0.82rem;
+    color: var(--texto-2);
+}
+
+.pie p {
+    margin: 0;
+}
+
+.pie__stats {
+    justify-self: end;
+    text-align: right;
+}
+
+.pie__stats span {
+    color: var(--texto);
+    font-weight: 600;
+}
+
+.pausa {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--hundido);
+    color: var(--texto);
+    cursor: pointer;
+    transition: background-color .2s;
+}
+
+.pausa:hover {
+    background: var(--hundido-2);
+}
+
+.pausa svg {
+    fill: currentColor;
+}
+
+/* Móvil */
+@media (max-width: 600px) {
+    .hero__entrada {
+        font-size: 0.92rem;
+    }
+
+    .escena {
+        min-height: 400px;
+    }
+
+    .pie {
+        grid-template-columns: 1fr auto;
+    }
+
+    .pie__pista {
+        display: none;
+    }
+
+    .pie__stats {
+        grid-row: 1;
+        justify-self: start;
+        text-align: left;
+    }
+}
+
+/* Si el usuario pide menos movimiento: sin animación de letras */
+@media (prefers-reduced-motion: reduce) {
+    .letra {
+        animation: none;
+    }
 }

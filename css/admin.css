@@ -1,0 +1,523 @@
+/* Página del admin: usa detalle.css (ficha, caja 3D y rejilla) y añade el formulario de gestión */
+
+.marca__rol {
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--texto);
+    color: #fff;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.volver {
+    border: 0;
+    cursor: pointer;
+}
+
+.cabecera__botones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* ---------- Estadísticas: barras de stock y donut de géneros ---------- */
+
+.estadisticas {
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    padding: 0 var(--margen);
+}
+
+.estadisticas__titulo {
+    margin: clamp(8px, 2vw, 24px) 0 24px;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+}
+
+.estadisticas__titulo span {
+    color: var(--texto-tenue);
+}
+
+/* Cifras rápidas: cuatro tarjetas con un número grande */
+.cifras {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.cifra {
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: var(--superficie);
+}
+
+.cifra span {
+    display: block;
+    color: var(--texto-2);
+    font-size: 0.8rem;
+}
+
+.cifra strong {
+    display: block;
+    margin-top: 4px;
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+}
+
+a.volver {
+    display: inline-flex;
+    align-items: center;
+}
+
+.graficos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.grafico {
+    margin: 0;
+    padding: 22px;
+    border-radius: 22px;
+    background: var(--superficie);
+}
+
+.grafico figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+.leyenda-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--texto-2);
+    font-size: 0.78rem;
+    font-weight: 500;
+}
+
+.punto {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+}
+
+.punto--nuevo {
+    background: var(--texto);
+}
+
+.punto--segunda {
+    margin-left: 6px;
+    background: var(--acento);
+}
+
+/* Barras horizontales: nombre · pista con dos tramos · total */
+.barras {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.barra {
+    display: grid;
+    grid-template-columns: 84px 1fr 44px;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+}
+
+.barra__nombre {
+    font-weight: 600;
+}
+
+.barra__pista {
+    display: flex;
+    height: 14px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--hundido);
+}
+
+.barra__nuevo,
+.barra__segunda {
+    height: 100%;
+    animation: crecer .9s var(--curva) both;
+    transform-origin: left;
+}
+
+.barra__nuevo {
+    background: var(--texto);
+}
+
+.barra__segunda {
+    background: var(--acento);
+}
+
+.barra__total {
+    text-align: right;
+    font-weight: 600;
+}
+
+/* Después de la primera vez, los refrescos del setInterval no vuelven a animar */
+.graficos.quieto .barra__nuevo,
+.graficos.quieto .barra__segunda {
+    animation: none;
+}
+
+.actualizado {
+    margin: -12px 0 20px;
+    color: var(--texto-tenue);
+    font-size: 0.82rem;
+}
+
+@keyframes crecer {
+    from { transform: scaleX(0); }
+}
+
+/* Donut: un círculo con conic-gradient y un agujero en medio */
+.donut-caja {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+}
+
+.donut {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 170px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--hundido);
+    -webkit-mask: radial-gradient(circle, transparent 54%, #000 55%);
+    mask: radial-gradient(circle, transparent 54%, #000 55%);
+}
+
+/* El número del centro va fuera del donut (la máscara lo borraría) y se coloca encima del agujero */
+.donut-envoltorio {
+    position: relative;
+    flex: none;
+}
+
+.donut__centro {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: grid;
+    justify-items: center;
+    transform: translate(-50%, -50%);
+    color: var(--texto-2);
+    font-size: 0.75rem;
+    line-height: 1.1;
+    pointer-events: none;
+}
+
+.donut__centro strong {
+    color: var(--texto);
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+}
+
+.leyenda {
+    display: grid;
+    flex: 1;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 6px 14px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.82rem;
+}
+
+.leyenda li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.leyenda b {
+    margin-left: auto;
+    font-weight: 600;
+}
+
+/* Móvil: el donut centrado y la leyenda debajo, a todo el ancho */
+@media (max-width: 480px) {
+    .donut-caja {
+        justify-content: center;
+    }
+
+    .leyenda {
+        flex-basis: 100%;
+    }
+
+    .barra {
+        grid-template-columns: 74px 1fr 36px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .barra__nuevo,
+    .barra__segunda {
+        animation: none;
+    }
+}
+
+/* ---------- Página de clientes ---------- */
+
+.barra-clientes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.barra-clientes select {
+    min-height: 44px;
+    padding: 0 14px;
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background: var(--hundido);
+    color: var(--texto);
+    font: inherit;
+}
+
+.barra-clientes select:focus {
+    border-color: var(--texto);
+    outline: none;
+}
+
+.lista-clientes {
+    display: grid;
+    gap: 10px;
+    margin: 0 0 40px;
+    padding: 0;
+    list-style: none;
+}
+
+.cliente {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 20px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: var(--superficie);
+}
+
+.cliente--inactivo {
+    opacity: 0.6;
+}
+
+.cliente__nombre {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-weight: 600;
+}
+
+.cliente__estado {
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #e3f1e8;
+    color: #1f5a3a;
+    font-size: 0.72rem;
+}
+
+.cliente--inactivo .cliente__estado {
+    background: #fbe4e1;
+    color: #c81e1e;
+}
+
+.cliente__detalle,
+.cliente__compras {
+    margin: 4px 0 0;
+    color: var(--texto-2);
+    font-size: 0.85rem;
+}
+
+.cliente__compras {
+    color: var(--texto);
+    font-weight: 600;
+}
+
+.error-campo {
+    min-height: 0;
+    color: #c81e1e;
+    font-size: 0.78rem;
+    font-weight: 500;
+}
+
+.error-campo:empty {
+    display: none;
+}
+
+/* Tarjeta del formulario */
+.gestion {
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    padding: 0 var(--margen);
+}
+
+.gestion > h2,
+.gestion > .formulario,
+.gestion > .aviso {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.gestion h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-top: 24px;
+    border-top: 1px solid var(--hundido-2);
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+}
+
+.formulario {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 16px 18px;
+    padding: 22px;
+    border-radius: 22px;
+    background: var(--superficie);
+}
+
+.formulario .campo {
+    display: grid;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.formulario .campo--ancho {
+    grid-column: 1 / -1;
+}
+
+.formulario input,
+.formulario select,
+.formulario textarea {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 2px solid transparent;
+    border-radius: 14px;
+    background: var(--hundido);
+    color: var(--texto);
+    font: inherit;
+    font-weight: 400;
+    transition: border-color .2s, background-color .2s;
+}
+
+.formulario textarea {
+    min-height: 90px;
+    padding: 12px 14px;
+    resize: vertical;
+}
+
+.formulario input:focus,
+.formulario select:focus,
+.formulario textarea:focus {
+    border-color: var(--texto);
+    background: #fff;
+    outline: none;
+}
+
+/* Botones: Guardar, Cancelar y (solo al editar) Eliminar */
+.formulario .acciones {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.formulario button,
+.acciones-ficha button {
+    min-height: 44px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--hundido);
+    color: var(--texto);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color .2s, color .2s;
+}
+
+.formulario button:hover,
+.acciones-ficha button:hover {
+    background: var(--hundido-2);
+}
+
+.formulario .principal {
+    background: var(--texto);
+    color: #fff;
+}
+
+.formulario .principal:hover {
+    background: var(--acento);
+}
+
+.formulario .peligro,
+.acciones-ficha .peligro {
+    color: #c81e1e;
+}
+
+.formulario .peligro {
+    margin-left: auto;
+}
+
+.formulario .peligro:hover,
+.acciones-ficha .peligro:hover {
+    background: #c81e1e;
+    color: #fff;
+}
+
+.formulario button:focus-visible,
+.acciones-ficha button:focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 3px;
+}
+
+.formulario [hidden] {
+    display: none;
+}
+
+/* Botones Editar / Eliminar debajo de los datos de la ficha */
+.acciones-ficha {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Mensaje tras guardar o eliminar */
+.aviso {
+    margin: 12px 0 0;
+    color: #2f6f4f;
+    font-weight: 600;
+}
+
+.aviso:empty {
+    display: none;
+}

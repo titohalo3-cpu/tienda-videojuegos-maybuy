@@ -3,22 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MayBuy</title>
+    <title>MayBuy · Iniciar sesión</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=swap">
     <link rel="stylesheet" href="../css/login.css">
-    <script src="../js/login.js"></script>
+    <script src="../js/login.js" type="module"></script>
+    <script src="../js/portadasLogin.js" defer></script>
 </head>
 <body>
-    <form>
-        <label for="idusuario">Email:</label>
-        <input type="email" name="idusuario" id="idusuario" required>
-        <span id="errorEmail" class="error"></span>
-        <br>
-        <label for="claveusuario">Clave:</label>
-        <input type="password" name="claveusuario" id="claveusuario" required>
-        <span id="errorClave" class="error"></span>
-        <br>
-        <button type="button" id="registro">Entrar</button>
-        <div id="mensajeError" class="oculto">El email o la contraseña no son correctos</div>
-    </form>
+    <header class="cabecera">
+        <span class="marca"><span class="marca__sello" aria-hidden="true">M</span>MayBuy</span>
+    </header>
+
+    <main class="hero">
+        <div class="hero__texto">
+            <h1 class="hero__titulo" aria-label="MayBuy">
+                <span class="palabra" aria-hidden="true"><span class="letra" style="--i:0">M</span><span class="letra" style="--i:1">a</span><span class="letra" style="--i:2">y</span></span><span class="palabra hero__tenue" aria-hidden="true"><span class="letra" style="--i:3">B</span><span class="letra" style="--i:4">u</span><span class="letra" style="--i:5">y</span></span>
+            </h1>
+            <p class="hero__entrada">Videojuegos nuevos y de segunda mano para todas las consolas. Entra con tu cuenta para comprar o gestionar la tienda.</p>
+        </div>
+
+        <div class="escena">
+            <!-- Túnel de carátulas (decorativo): lo pinta portadasLogin.js -->
+            <div class="tunel" id="tunel" aria-hidden="true">
+                <ul class="tunel__anillo" id="anillo"></ul>
+            </div>
+
+            <!-- Formulario de login (lo controla login.js: no cambiar los id) -->
+            <form class="acceso" novalidate>
+                <h2 class="acceso__titulo">Iniciar sesión</h2>
+
+                <div class="campo">
+                    <label for="idusuario">Email</label>
+                    <input type="email" name="idusuario" id="idusuario" autocomplete="username" placeholder="tu@correo.es" required>
+                    <span id="errorEmail" class="error" aria-live="polite"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="claveusuario">Clave</label>
+                    <input type="password" name="claveusuario" id="claveusuario" autocomplete="current-password" placeholder="••••••••" required>
+                    <span id="errorClave" class="error" aria-live="polite"></span>
+                </div>
+
+                <label class="recordar">
+                    <input type="checkbox" id="recordar"> Recordar mi email
+                </label>
+
+                <button type="button" id="registro" class="acceso__boton">Entrar</button>
+                <div id="mensajeError" class="oculto" role="alert">El email o la contraseña no son correctos</div>
+                <p class="acceso__alternativa">¿No tienes cuenta? <a href="./registro.html">Regístrate</a></p>
+            </form>
+        </div>
+    </main>
+
+    <footer class="pie">
+        <p class="pie__pista">Arrastra las carátulas para explorar el catálogo</p>
+        <button type="button" class="pausa" id="botonPausa" aria-label="Pausar el movimiento" aria-pressed="false">
+            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1" width="3" height="10" rx="1"/><rect x="7" y="1" width="3" height="10" rx="1"/></svg>
+        </button>
+        <p class="pie__stats" id="estadisticas"><span>–</span> juegos · <span>–</span> plataformas · <span>–</span> géneros</p>
+    </footer>
 </body>
 </html>

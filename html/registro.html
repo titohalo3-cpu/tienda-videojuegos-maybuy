@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MayBuy · Crear cuenta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=swap">
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/registro.css">
+    <script src="../js/mains/mainregistro.js" type="module"></script>
+</head>
+<body>
+    <header class="cabecera">
+        <span class="marca"><span class="marca__sello" aria-hidden="true">M</span>MayBuy</span>
+    </header>
+
+    <main class="registro">
+        <div class="registro__texto">
+            <h1 class="registro__titulo">Crea tu <span>cuenta</span></h1>
+            <p>Regístrate para comprar juegos nuevos y de segunda mano y ver el historial de tus compras.</p>
+        </div>
+
+        <!-- novalidate: la validación la hace mainregistro.js con expresiones regulares -->
+        <form class="acceso registro__form" id="formRegistro" novalidate>
+            <div class="campo">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" autocomplete="given-name" placeholder="Lucía" required>
+                <span class="error" id="errorNombre" aria-live="polite"></span>
+            </div>
+
+            <div class="campo">
+                <label for="apellidos">Apellidos</label>
+                <input type="text" id="apellidos" name="apellidos" autocomplete="family-name" placeholder="García López" required>
+                <span class="error" id="errorApellidos" aria-live="polite"></span>
+            </div>
+
+            <div class="campo campo--ancho">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" autocomplete="email" placeholder="tu@correo.es" required>
+                <span class="error" id="errorEmail" aria-live="polite"></span>
+            </div>
+
+            <div class="campo">
+                <label for="telefono">Teléfono</label>
+                <input type="tel" id="telefono" name="telefono" inputmode="numeric" maxlength="9" placeholder="612345678" required>
+                <span class="error" id="errorTelefono" aria-live="polite"></span>
+            </div>
+
+            <div class="campo">
+                <label for="fechaNacimiento">Fecha de nacimiento</label>
+                <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+                <span class="error" id="errorFecha" aria-live="polite"></span>
+            </div>
+
+            <div class="campo">
+                <label for="clave">Clave</label>
+                <input type="password" id="clave" name="clave" autocomplete="new-password" placeholder="••••••••" required>
+                <span class="error" id="errorClave" aria-live="polite"></span>
+            </div>
+
+            <div class="campo">
+                <label for="clave2">Repite la clave</label>
+                <input type="password" id="clave2" name="clave2" autocomplete="new-password" placeholder="••••••••" required>
+                <span class="error" id="errorClave2" aria-live="polite"></span>
+            </div>
+
+            <label class="recordar campo--ancho">
+                <input type="checkbox" id="condiciones"> Acepto las condiciones de uso
+            </label>
+            <span class="error campo--ancho" id="errorCondiciones" aria-live="polite"></span>
+
+            <button type="submit" class="acceso__boton campo--ancho">Crear cuenta</button>
+            <div class="registro__ok campo--ancho" id="mensajeOk" hidden role="status"></div>
+            <p class="acceso__alternativa campo--ancho">¿Ya tienes cuenta? <a href="./login.html">Inicia sesión</a></p>
+        </form>
+    </main>
+
+    <footer class="pie">
+        <p class="pie__pista">MayBuy · Tienda de videojuegos</p>
+    </footer>
+</body>
+</html>

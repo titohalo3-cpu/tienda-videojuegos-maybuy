@@ -1,10 +1,9 @@
-let listaUsuarios = [];
-const patron_email = /^[\w.+-]+@[\w-]+(\.[\w-]+)*\.[a-z]{2,}$/i;
-const patron_clave = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,20}$/;
-const cargaUsuarios = fetch("../json/usuarios.json")
-    .then(respuesta => respuesta.json())
-    .then(datosJson => listaUsuarios = datosJson)
-    .catch(error => console.error("No se pudo cargar usuarios.json. Abre la página desde un servidor (Live Server), no con doble clic.", error));
+// Login: valida el formulario con expresiones regulares, busca el usuario y lo guarda en sessionStorage.
+// Es un módulo (type="module") para poder importar la lógica de usuarios.
+import { cargarUsuarios, buscarUsuario, PATRONES, guardarCookie, leerCookie, borrarCookie } from './modulo(logica)/modulousuarios.js';
+
+let usuariosCargados = false;
+cargarUsuarios(() => usuariosCargados = true);
 
 onload = () => {
     document.getElementById("registro").addEventListener("click", validarAcceso);
@@ -12,12 +11,26 @@ onload = () => {
     document.getElementById("claveusuario").addEventListener("focus", ocultarError);
     document.getElementById("idusuario").addEventListener("blur", comprobarEmail);
     document.getElementById("claveusuario").addEventListener("blur", comprobarClave);
+
+    // Evento keypress: pulsar Enter en la clave es como pulsar "Entrar"
+    document.getElementById("claveusuario").addEventListener("keypress", e => {
+        if (e.key == "Enter") {
+            validarAcceso();
+        }
+    });
+
+    // Cookie: si el usuario marcó "Recordar mi email", se rellena solo
+    let emailRecordado = leerCookie("emailRecordado");
+    if (emailRecordado != "") {
+        document.getElementById("idusuario").value = emailRecordado;
+        document.getElementById("recordar").checked = true;
+    }
 };
 
 function comprobarEmail() {
     let email = document.getElementById("idusuario").value.trim();
     let error = document.getElementById("errorEmail");
-    if (!patron_email.test(email)) {
+    if (!PATRONES.email.test(email)) {
         error.textContent = "El email debe tener el formato usuario@dominio.es";
         return false;
     }
@@ -28,7 +41,7 @@ function comprobarEmail() {
 function comprobarClave() {
     let clave = document.getElementById("claveusuario").value;
     let error = document.getElementById("errorClave");
-    if (!patron_clave.test(clave)) {
+    if (!PATRONES.clave.test(clave)) {
         error.textContent = "De 8 a 20 caracteres con mayúscula, minúscula, número y símbolo";
         return false;
     }
@@ -36,51 +49,52 @@ function comprobarClave() {
     return true;
 }
 
-async function validarAcceso() {
+function mostrarError(texto) {
+    let mensaje = document.getElementById("mensajeError");
+    mensaje.textContent = texto;
+    mensaje.className = "visible";
+}
+
+function validarAcceso() {
     let emailValido = comprobarEmail();
     let claveValida = comprobarClave();
     if (!emailValido || !claveValida) {
         return;
     }
 
-    await cargaUsuarios;
-
-    if (listaUsuarios.length == 0) {
-        document.getElementById("mensajeError").textContent = "No se pudieron cargar los usuarios. Abre la web desde un servidor (Live Server).";
-        document.getElementById("mensajeError").className = "visible";
+    if (!usuariosCargados) {
+        mostrarError("No se pudieron cargar los usuarios. Abre la web desde un servidor (Live Server).");
         return;
     }
 
     let emailUsuario = document.getElementById("idusuario").value.trim();
     let claveUsuario = document.getElementById("claveusuario").value;
 
-    let usuario = listaUsuarios.find(u => u.email == emailUsuario && u.clave == claveUsuario);
+    let usuario = buscarUsuario(emailUsuario, claveUsuario);
 
     if (!usuario) {
-        document.getElementById("mensajeError").className = "visible";
+        mostrarError("El email o la contraseña no son correctos");
         return;
     }
 
     if (!usuario.activo) {
-        document.getElementById("mensajeError").textContent = "Tu cuenta está desactivada";
-        document.getElementById("mensajeError").className = "visible";
+        mostrarError("Tu cuenta está desactivada");
         return;
+    }
+
+    // Cookie de 30 días con el email (solo si marcó "Recordar mi email")
+    if (document.getElementById("recordar").checked) {
+        guardarCookie("emailRecordado", emailUsuario, 30);
+    } else {
+        borrarCookie("emailRecordado");
     }
 
     sessionStorage.setItem("usuario", JSON.stringify(usuario));
 
-    
-
-    switch (usuario.rol) {
-        case "admin":
-            location.href = "./admin.html";
-            break;
-        case "trabajador":
-            location.href = "./trabajador.html";
-            break;
-        case "cliente":
-            location.href = "./cliente.html";
-            break;
+    if (usuario.esAdmin()) {
+        location.href = "./admin.html";
+    } else {
+        location.href = "./cliente.html";
     }
 }
 

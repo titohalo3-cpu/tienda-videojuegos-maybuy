@@ -1,8 +1,17 @@
-import { SECCIONES } from '../modulo(logica)/modulojuegos.js';
-
 class MenuPrincipal extends HTMLElement {
     constructor() {
         super();
+        this.titulo = "Mi Tienda";
+        this.carrito = null;    // null = esta página no tiene carrito (el admin)
+        this.abierto = false;
+        this.opciones = [];
+        this.opcionActual = "";
+        this.alElegir = null;
+        this.alSalir = null;
+        this.alComprar=null;
+        this.elementos = [];
+        this.alVerCarrito = null;
+        this.textoBoton = "Comprar";
     }
 
     connectedCallback() {
@@ -10,21 +19,27 @@ class MenuPrincipal extends HTMLElement {
     }
 
     get template() {
-        let carrito = this.getAttribute("carrito") || 0;
+        // Solo hay botón de carrito si la página le ha dado el atributo "carrito"
+        let botonCarrito = "";
+        if (this.carrito != null) {
+            botonCarrito = `<button class="carrito" id="botonCarrito">Carrito (${this.carrito})</button>`;
+        }
         return `
             <div class="barra">
-                <button type="button" id="botonAbrirMenu" class="abrir">☰ Menú</button>
-                <span class="logo">MayBuy</span>
-                <span class="carrito">Carrito (${carrito})</span>
+                <span class="logo">${this.titulo}</span>
+                <button class="abrir" id="botonAbrirMenu">☰ Menú</button>
+                ${botonCarrito}
+                <button class="salir" id="botonSalir">
+                    <span class="largo">Cerrar sesión</span><span class="corto">Salir</span>
+                </button>
             </div>
-
             <div id="fondoMenu" class="fondo"></div>
-
             <nav class="panel">
-                <button type="button" id="botonCerrarMenu" class="cerrar">✕</button>
-                <h2>Destacados</h2>
-                <div id="menuDestacados"></div>
+                <button class="cerrar" id="botonCerrarMenu">✕</button>
+                <h2>Secciones</h2>
+                <div id="despegable"></div>
             </nav>
+            <section id="lista" class="lista"></section>
         `;
     }
 
@@ -33,47 +48,127 @@ class MenuPrincipal extends HTMLElement {
         document.getElementById("botonAbrirMenu").addEventListener("click", () => this.abrir());
         document.getElementById("botonCerrarMenu").addEventListener("click", () => this.cerrar());
         document.getElementById("fondoMenu").addEventListener("click", () => this.cerrar());
+        document.getElementById("botonSalir").addEventListener("click", () => this.salir());
+        // El botón del carrito puede no existir (en el admin): solo se escucha si está
+        let botonCarrito = document.getElementById("botonCarrito");
+        if (botonCarrito) {
+            botonCarrito.addEventListener("click", () => this.verCarrito());
+        }
 
-        // Un botón por cada sección destacada
-        let destacados = document.getElementById("menuDestacados");
-        SECCIONES.forEach(seccion => {
+        let contenedor = document.getElementById("despegable");
+        this.opciones.forEach(opcion => {
             let boton = document.createElement("button");
-            boton.type = "button";
             boton.className = "destacado";
+            boton.id = "destacado";
             boton.innerHTML = `
                 <span class="texto">
-                    <strong>${seccion.titulo}</strong>
-                    <small>${seccion.subtitulo}</small>
+                    <strong>${opcion.titulo}</strong>
+                    <small>${opcion.subtitulo}</small>
                 </span>
                 <span class="flecha">›</span>
             `;
-            boton.addEventListener("click", () => this.irA(seccion.clave));
-            destacados.appendChild(boton);
+            boton.addEventListener("click", () => this.elegir(opcion.clave));
+            contenedor.appendChild(boton);
+        });
+
+        this.pintarLista();
+    }
+
+    pintarLista() {
+        let lista = document.getElementById("lista");
+        this.elementos.forEach(elemento => {
+            let tarjeta = document.createElement("article");
+            let titulo = document.createElement("h3");
+            let detalle = document.createElement("p");
+            let precio = document.createElement("p");
+            let extra = document.createElement("p");
+
+            titulo.innerHTML = elemento.titulo;
+            detalle.innerHTML = elemento.detalle;
+            precio.innerHTML = elemento.precio + " €";
+            precio.className = "precio";
+            extra.innerHTML = elemento.extra;
+            extra.className = "extra";
+
+            tarjeta.appendChild(titulo);
+            tarjeta.appendChild(detalle);
+            tarjeta.appendChild(precio);
+            tarjeta.appendChild(extra);
+
+            // El botón solo existe si el main le ha dado un texto
+            if (this.textoBoton != "") {
+                let boton = document.createElement("button");
+                boton.innerHTML = this.textoBoton;
+                boton.className = "comprar";
+                boton.addEventListener("click", () => this.comprar(elemento.id));
+                tarjeta.appendChild(boton);
+            }
+
+            lista.appendChild(tarjeta);
         });
     }
 
     abrir() {
+        this.abierto = true;
         this.className = "abierto";
     }
 
     cerrar() {
+        this.abierto = false;
         this.className = "";
     }
 
-    // De momento solo cierra el menú; aquí se llamará a la función que pinte la lista de esa sección
-    irA(seccion) {
-        console.log("Sección elegida:", seccion);
+    elegir(clave) {
+        this.opcionActual = clave;
+        if (this.alElegir) {
+            this.alElegir(clave);
+        }
         this.cerrar();
     }
 
+    // Avisa de que han pulsado "Cerrar sesión" (qué hacer lo decide el main)
+    salir() {
+        if (this.alSalir) {
+            this.alSalir();
+        }
+    }
+
+    // Avisa de que han pulsado "Comprar" en una tarjeta y de cuál (qué hacer lo decide el main)
+    comprar(id) {
+        if (this.alComprar) {
+            this.alComprar(id);
+        }
+    }
+    // Avisa de que han pulsado "Carrito" (qué enseñar lo decide el main)
+    verCarrito() {
+        if (this.alVerCarrito) {
+            this.alVerCarrito();
+        }
+    }
+
     static get observedAttributes() {
-        return ["carrito"];
+        return ["titulo", "carrito", "opciones", "elementos","boton"];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        if (oldValue !== newValue) {
-            this.pintar();
+        switch (name) {
+            case "titulo":
+                this.titulo = newValue;
+                break;
+            case "carrito":
+                this.carrito = newValue;
+                break;
+            case "opciones":
+                this.opciones = JSON.parse(newValue);
+                break;
+            case "elementos":
+                this.elementos = JSON.parse(newValue);
+                break;
+            case "boton":
+                this.textoBoton=newValue;
+                break;
         }
+        this.pintar();
     }
 }
 

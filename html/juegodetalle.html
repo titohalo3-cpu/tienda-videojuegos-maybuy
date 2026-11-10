@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MayBuy · Fichas de juegos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=swap">
+    <link rel="stylesheet" href="../css/detalle.css">
+    <script src="../js/mains/maindetalle.js" type="module"></script>
+</head>
+<body>
+    <header class="cabecera">
+        <span class="marca"><span class="marca__sello" aria-hidden="true">M</span>MayBuy</span>
+        <a class="volver" id="enlaceVolver" href="./cliente.html">← Volver a la tienda</a>
+    </header>
+
+    <main class="ficha">
+        <!-- Caja del juego en 3D: se gira arrastrando, con los botones o con las flechas del teclado -->
+        <section class="vitrina" aria-label="Caja del juego">
+            <div class="escena" id="escena" tabindex="0" aria-label="Caja en 3D. Arrastra o usa las flechas para girarla">
+                <div class="caja" id="caja"></div>
+            </div>
+            <div class="vistas" role="group" aria-label="Ver la caja por">
+                <button class="vista activa" data-angulo="0">Portada</button>
+                <button class="vista" data-angulo="90">Lomo</button>
+                <button class="vista" data-angulo="180">Contraportada</button>
+            </div>
+            <p class="pista">Arrastra la caja para girarla 360°</p>
+        </section>
+
+        <!-- Datos del juego -->
+        <section class="datos" id="datos" aria-live="polite"></section>
+    </main>
+
+    <!-- Todos los juegos: al pulsar uno se carga su ficha arriba -->
+    <section class="catalogo">
+        <div class="catalogo__cabecera">
+            <h2>Todos los juegos</h2>
+            <input class="buscador" id="buscador" type="search" placeholder="Buscar por título" aria-label="Buscar por título">
+        </div>
+        <ul class="rejilla" id="rejilla"></ul>
+    </section>
+</body>
+</html>

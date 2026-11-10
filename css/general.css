@@ -9,3 +9,9 @@ body {
 main {
     padding: 2rem 1.25rem;
 }
+
+/* Barra, filtros y lista uno debajo de otro (el orden lo pone "order") */
+body {
+    display: flex;
+    flex-direction: column;
+}

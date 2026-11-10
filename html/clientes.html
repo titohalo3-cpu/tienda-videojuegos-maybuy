@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MayBuy · Clientes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=swap">
+    <link rel="stylesheet" href="../css/detalle.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <script type="module" src="../js/mains/mainclientes.js"></script>
+</head>
+<body>
+    <header class="cabecera">
+        <span class="marca"><span class="marca__sello" aria-hidden="true">M</span>MayBuy <span class="marca__rol">Admin</span></span>
+        <div class="cabecera__botones">
+            <a class="volver" href="./admin.html">Juegos</a>
+            <a class="volver" href="./estadisticas.html">Estadísticas</a>
+            <button class="volver" id="botonSalir">Cerrar sesión</button>
+        </div>
+    </header>
+
+    <main class="estadisticas">
+        <h1 class="estadisticas__titulo">Clientes <span id="numClientes"></span></h1>
+
+        <!-- CONSULTAR: buscar, filtrar por estado y ordenar -->
+        <div class="barra-clientes">
+            <input class="buscador" id="buscarCliente" type="search" placeholder="Buscar por nombre o email" aria-label="Buscar cliente">
+            <select id="filtroEstado" aria-label="Filtrar por estado">
+                <option value="">Todos</option>
+                <option value="activo">Activos</option>
+                <option value="inactivo">Desactivados</option>
+            </select>
+            <select id="ordenCampo" aria-label="Ordenar por">
+                <option value="nombre">Ordenar por nombre</option>
+                <option value="apellidos">Ordenar por apellidos</option>
+                <option value="fechaAlta">Ordenar por fecha de alta</option>
+                <option value="ultimoAcceso">Ordenar por último acceso</option>
+            </select>
+            <select id="ordenSentido" aria-label="Sentido">
+                <option value="asc">Ascendente</option>
+                <option value="desc">Descendente</option>
+            </select>
+        </div>
+
+        <ul class="lista-clientes" id="listaClientes"></ul>
+    </main>
+
+    <!-- ALTA y MODIFICAR de clientes: el mismo formulario -->
+    <section class="gestion" id="gestion">
+        <h2 id="tituloFormulario">Nuevo cliente</h2>
+        <form class="formulario" id="formCliente" novalidate>
+            <input type="hidden" id="idCliente">
+
+            <label class="campo">Nombre
+                <input name="nombre" required>
+                <span class="error-campo" data-error="nombre"></span>
+            </label>
+            <label class="campo">Apellidos
+                <input name="apellidos" required>
+                <span class="error-campo" data-error="apellidos"></span>
+            </label>
+            <label class="campo">Email
+                <input name="email" type="email" required>
+                <span class="error-campo" data-error="email"></span>
+            </label>
+            <label class="campo">Teléfono
+                <input name="telefono" type="tel" inputmode="numeric" maxlength="9">
+                <span class="error-campo" data-error="telefono"></span>
+            </label>
+            <label class="campo">Fecha de nacimiento
+                <input name="fechaNacimiento" type="date">
+            </label>
+            <label class="campo">Clave
+                <input name="clave" type="password" autocomplete="new-password">
+                <span class="error-campo" data-error="clave"></span>
+            </label>
+
+            <div class="acciones">
+                <button type="submit" class="principal">Guardar</button>
+                <button type="reset" id="botonCancelar">Cancelar</button>
+            </div>
+        </form>
+        <p class="aviso" id="aviso"></p>
+    </section>
+</body>
+</html>

@@ -5,7 +5,9 @@ menu-principal {
     --suave: #6b6b78;
     --linea: #ececf0;
     --acento: #c2410c;
-    display: block;
+    /* "contents": sus partes (barra, lista...) se colocan como hijas del body,
+       así los filtros de cada página pueden ir entre la barra y la lista */
+    display: contents;
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
@@ -47,8 +49,17 @@ menu-principal .logo {
 
 menu-principal .carrito {
     margin-left: auto;
+    padding: .4rem .2rem;
+    border: 0;
+    background: none;
     color: var(--tinta);
+    font: inherit;
     font-weight: 600;
+    cursor: pointer;
+}
+
+menu-principal .carrito:hover {
+    text-decoration: underline;
 }
 
 /* Fondo oscuro y panel lateral (ocultos hasta que el menú tiene la clase "abierto") */
@@ -191,4 +202,116 @@ menu-principal .categorias .flecha {
 menu-principal :focus-visible {
     outline: 2px solid var(--acento);
     outline-offset: 2px;
+}
+
+/* Lista de la sección elegida: tarjetas genéricas (titulo, detalle, precio) */
+menu-principal .lista {
+    order: 2;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+menu-principal .lista article {
+    padding: 1rem;
+    border: 1px solid var(--linea);
+    border-radius: .75rem;
+    background: #fff;
+}
+
+menu-principal .lista h3 {
+    margin: 0 0 .35rem;
+    font-size: 1rem;
+    color: var(--tinta);
+}
+
+menu-principal .lista p {
+    margin: 0;
+    color: var(--suave);
+}
+
+menu-principal .lista .precio {
+    margin-top: .75rem;
+    font-weight: 700;
+    color: var(--acento);
+}
+
+/* Que el botón y el carrito no se partan en dos líneas en el móvil */
+menu-principal .abrir,
+menu-principal .carrito {
+    white-space: nowrap;
+}
+
+/* Con carrito, el carrito ya empuja a la derecha: "Salir" va pegado a él */
+menu-principal .carrito + .salir {
+    margin-left: 0;
+}
+
+/* Línea extra de la tarjeta (en la tienda: el otro precio) */
+menu-principal .lista .extra {
+    margin-top: .2rem;
+    font-size: .85rem;
+}
+
+/* Botón de cerrar sesión (en el móvil pone "Salir" para que quepa) */
+menu-principal .salir {
+    margin-left: auto;          /* sin carrito (admin), "Salir" se va igual a la derecha */
+    padding: .5rem .9rem;
+    border: 0;
+    border-radius: 999px;
+    background: #f1f1f4;
+    color: var(--tinta);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+menu-principal .salir:hover {
+    background: var(--tinta);
+    color: #fff;
+}
+
+menu-principal .salir .corto {
+    display: none;
+}
+
+@media (max-width: 480px) {
+    menu-principal .barra {
+        gap: .6rem;
+        padding: 0 .9rem;
+    }
+
+    menu-principal .salir .largo {
+        display: none;
+    }
+
+    menu-principal .salir .corto {
+        display: inline;
+    }
+}
+
+/* Botón "Comprar" de cada tarjeta */
+menu-principal .lista article {
+    display: flex;
+    flex-direction: column;
+}
+
+menu-principal .lista .comprar {
+    align-self: flex-start;
+    margin-top: auto;
+    padding: .5rem 1.1rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--tinta);
+    color: #fff;
+    font-weight: 600;
+    transition: background-color .2s;
+}
+
+menu-principal .lista .extra {
+    margin-bottom: .9rem;
+}
+
+menu-principal .lista .comprar:hover {
+    background: var(--acento);
 }

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MayBuy · Estadísticas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=swap">
+    <link rel="stylesheet" href="../css/detalle.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <script type="module" src="../js/mains/mainestadisticas.js"></script>
+</head>
+<body>
+    <header class="cabecera">
+        <span class="marca"><span class="marca__sello" aria-hidden="true">M</span>MayBuy <span class="marca__rol">Admin</span></span>
+        <div class="cabecera__botones">
+            <a class="volver" href="./admin.html">Juegos</a>
+            <a class="volver" href="./clientes.html">Clientes</a>
+            <button class="volver" id="botonSalir">Cerrar sesión</button>
+        </div>
+    </header>
+
+    <!-- ESTADÍSTICAS: se calculan con los juegos actuales (también los cambios guardados en localStorage) -->
+    <main class="estadisticas" aria-label="Estadísticas del catálogo">
+        <h1 class="estadisticas__titulo">Estadísticas <span>del catálogo</span></h1>
+        <p class="actualizado" id="actualizado" aria-live="polite"></p>
+
+        <!-- Cifras rápidas -->
+        <div class="cifras">
+            <div class="cifra"><span>Juegos</span><strong id="cifraJuegos">0</strong></div>
+            <div class="cifra"><span>Títulos distintos</span><strong id="cifraTitulos">0</strong></div>
+            <div class="cifra"><span>Unidades en stock</span><strong id="cifraStock">0</strong></div>
+            <div class="cifra"><span>Valor del stock</span><strong id="cifraValor">0 €</strong></div>
+        </div>
+
+        <div class="graficos">
+            <figure class="grafico">
+                <figcaption>
+                    Stock por plataforma
+                    <span class="leyenda-mini">
+                        <i class="punto punto--nuevo"></i>Nuevo
+                        <i class="punto punto--segunda"></i>2.ª mano
+                    </span>
+                </figcaption>
+                <ul class="barras" id="graficoStock"></ul>
+            </figure>
+            <figure class="grafico">
+                <figcaption>Juegos por género</figcaption>
+                <div class="donut-caja">
+                    <div class="donut-envoltorio">
+                        <div class="donut" id="donutGeneros" role="img" aria-label="Reparto de juegos por género"></div>
+                        <span class="donut__centro"><strong id="totalJuegos">0</strong>juegos</span>
+                    </div>
+                    <ul class="leyenda" id="leyendaGeneros"></ul>
+                </div>
+            </figure>
+        </div>
+    </main>
+</body>
+</html>

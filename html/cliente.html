@@ -6,12 +6,61 @@
     <title>MayBuy</title>
     <link rel="stylesheet" href="../css/general.css">
     <link rel="stylesheet" href="../css/menu.css">
-    <script src="../js/maincliente.js" type="module"></script>
+    <link rel="stylesheet" href="../css/filtros.css">
+    <script src="../js/mains/maincliente.js" type="module"></script>
 </head>
 <body>
-    <menu-principal carrito="0"></menu-principal>
-    <main>
-        <!-- Aquí se pintará la lista de juegos -->
-    </main>
+    <menu-principal titulo="MayBuy" carrito="0"></menu-principal>
+
+    <section class="filtros">
+        <h2>Filtros</h2>
+
+        <label class="campo">
+            Plataforma
+            <select id="filtroPlataforma">
+                <option value="">Todas</option>
+                <option value="PS5">PS5</option>
+                <option value="PS4">PS4</option>
+                <option value="Switch">Switch</option>
+                <option value="Switch 2">Switch 2</option>
+                <option value="Xbox Series">Xbox Series</option>
+                <option value="PC">PC</option>
+            </select>
+        </label>
+
+        <label class="campo">
+            Género
+            <select id="filtroGenero">
+                <option value="">Todos</option>
+                <option value="Acción">Acción</option>
+                <option value="Aventura">Aventura</option>
+                <option value="Carreras">Carreras</option>
+                <option value="Deportes">Deportes</option>
+                <option value="Plataformas">Plataformas</option>
+                <option value="RPG">RPG</option>
+                <option value="Sandbox">Sandbox</option>
+                <option value="Shooter">Shooter</option>
+                <option value="Simulación">Simulación</option>
+            </select>
+        </label>
+
+        <label class="campo">
+            <span id="textoOrden">Ordenar por precio</span>
+            <select id="filtroOrden">
+                <option value="desc">De mayor a menor</option>
+                <option value="asc">De menor a mayor</option>
+            </select>
+        </label>
+
+        <div class="campo">
+            Precio
+            <div class="rango" id="rangoPrecio">
+                <input type="range" id="precioMin" min="0" max="100" value="0" aria-label="Precio mínimo">
+                <input type="range" id="precioMax" min="0" max="100" value="100" aria-label="Precio máximo">
+            </div>
+            <p class="rango-texto" id="textoPrecio">Entre 0 € y 100 €</p>
+        </div>
+    </section>
+
 </body>
 </html>

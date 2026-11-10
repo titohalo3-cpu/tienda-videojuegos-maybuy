@@ -1,0 +1,162 @@
+/* Caja de filtros de la tienda (va entre la barra del menú y la lista) */
+.filtros {
+    order: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem 1.5rem;
+    margin: 1rem 1rem 0;
+    padding: 1rem 1.25rem 1.25rem;
+    border: 1px solid #ececf0;
+    border-radius: .75rem;
+    background: #fff;
+}
+
+/* Resumen del carrito: entre los filtros y la lista, solo cuando tiene texto */
+.resumen-carrito {
+    order: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem 1rem;
+    margin: 1rem 1rem 0;
+    padding: .85rem 1.25rem;
+    border-radius: .75rem;
+    background: #fff4ec;
+    color: #111;
+    font-weight: 600;
+}
+
+/* Los filtros se ocultan mientras se ve el carrito (el main les pone "hidden") */
+.filtros[hidden] {
+    display: none;
+}
+
+.resumen-carrito p {
+    margin: 0;
+}
+
+/* Oculto mientras se ve el catálogo (el main le pone o le quita "hidden") */
+.resumen-carrito[hidden],
+.resumen-carrito:empty {
+    display: none;
+}
+
+.resumen-carrito button {
+    padding: .5rem 1rem;
+    border: 1px solid #111;
+    border-radius: 999px;
+    background: #fff;
+    color: #111;
+    font: inherit;
+    font-size: .9rem;
+    cursor: pointer;
+}
+
+.resumen-carrito button:hover {
+    background: #111;
+    color: #fff;
+}
+
+.filtros h2 {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.filtros .campo {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    font-weight: 700;
+}
+
+.filtros select {
+    padding: .55rem .6rem;
+    border: 1px solid #d8d8de;
+    border-radius: .5rem;
+    background: #fff;
+    font: inherit;
+    font-weight: 400;
+}
+
+/* Slider de precio con dos puntos: dos input range uno encima del otro */
+.rango {
+    --desde: 0%;
+    --hasta: 100%;
+    position: relative;
+    height: 24px;
+}
+
+/* La línea: gris fuera del rango y naranja entre los dos puntos */
+.rango::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    right: 10px;
+    height: 4px;
+    border-radius: 2px;
+    transform: translateY(-50%);
+    background: linear-gradient(to right,
+        #e2e2e8 var(--desde), #c2410c var(--desde),
+        #c2410c var(--hasta), #e2e2e8 var(--hasta));
+}
+
+.rango input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 24px;
+    margin: 0;
+    background: none;
+    pointer-events: none; /* la línea no se toca: solo los puntos */
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.rango input::-webkit-slider-runnable-track {
+    height: 24px;
+    background: none;
+}
+
+.rango input::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    border: 2px solid #16161d;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    pointer-events: auto;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.rango input::-moz-range-track {
+    background: none;
+}
+
+.rango input::-moz-range-thumb {
+    box-sizing: border-box;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #16161d;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.rango input:focus-visible::-webkit-slider-thumb {
+    outline: 2px solid #c2410c;
+    outline-offset: 2px;
+}
+
+.rango-texto {
+    margin: 0;
+    color: #6b6b78;
+    font-size: .85rem;
+    font-weight: 400;
+    text-align: center;
+}

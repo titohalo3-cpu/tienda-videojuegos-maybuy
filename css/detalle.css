@@ -1,0 +1,782 @@
+/* Ficha de juego de MayBuy: estilo "Kansō" del login (fondo hueso) y caja del juego en 3D */
+
+:root {
+    --fondo: #ecebe6;
+    --superficie: #f6f5f1;
+    --hundido: #e1e0da;
+    --hundido-2: #d6d5cf;
+    --texto: #111111;
+    --texto-2: #5a5853;
+    --texto-tenue: #8b8984;
+    --acento: #ff4a1c;
+    --curva: cubic-bezier(.16, 1, .3, 1);
+    --margen: clamp(16px, 4vw, 40px);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: Geist, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-variant-numeric: tabular-nums;
+    overflow-x: hidden;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+/* Cabecera */
+.cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 20px var(--margen);
+}
+
+.marca {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+}
+
+.marca__sello {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--acento);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.volver {
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: var(--hundido);
+    color: var(--texto);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color .2s;
+}
+
+.volver:hover {
+    background: var(--hundido-2);
+}
+
+/* Ficha: caja a la izquierda y datos a la derecha (en móvil, una debajo de otra) */
+.ficha {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: clamp(24px, 5vw, 72px);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(8px, 2vw, 24px) var(--margen) clamp(32px, 5vw, 64px);
+}
+
+.vitrina {
+    display: grid;
+    justify-items: center;
+    gap: 18px;
+}
+
+/* ---------- Caja 3D ---------- */
+
+.escena {
+    --w: clamp(210px, 24vw, 300px);
+    --banda: calc(var(--w) * 0.085);
+    --h: calc(var(--w) * 1.5 + var(--banda));
+    --d: calc(var(--w) * 0.1);
+    display: grid;
+    place-items: center;
+    width: 100%;
+    min-height: calc(var(--h) + 60px);
+    perspective: 1400px;
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
+    border-radius: 24px;
+    outline: none;
+}
+
+.escena:focus-visible {
+    box-shadow: 0 0 0 2px var(--acento);
+}
+
+.escena.arrastrando {
+    cursor: grabbing;
+}
+
+.caja {
+    position: relative;
+    width: var(--w);
+    height: var(--h);
+    transform-style: preserve-3d;
+    transform: rotateX(var(--rx, -6deg)) rotateY(var(--ry, -24deg));
+    will-change: transform;
+}
+
+/* Al cambiar de vista con los botones, el giro se anima */
+.caja.suave {
+    transition: transform .9s var(--curva);
+}
+
+.cara {
+    position: absolute;
+    overflow: hidden;
+    backface-visibility: hidden;
+    background: #fff;
+}
+
+.cara--frente,
+.cara--detras {
+    inset: 0;
+    border-radius: 3px;
+}
+
+.cara--frente {
+    transform: translateZ(calc(var(--d) / 2));
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+}
+
+.cara--detras {
+    transform: rotateY(180deg) translateZ(calc(var(--d) / 2));
+}
+
+.cara--lomo,
+.cara--canto {
+    top: 0;
+    left: calc((var(--w) - var(--d)) / 2);
+    width: var(--d);
+    height: var(--h);
+}
+
+.cara--lomo {
+    transform: rotateY(-90deg) translateZ(calc(var(--w) / 2));
+}
+
+.cara--canto {
+    transform: rotateY(90deg) translateZ(calc(var(--w) / 2));
+    background: linear-gradient(90deg, #d9dde3, #f3f5f8 45%, #cfd4db);
+}
+
+.cara--arriba,
+.cara--abajo {
+    left: 0;
+    top: calc((var(--h) - var(--d)) / 2);
+    width: var(--w);
+    height: var(--d);
+    background: linear-gradient(#e7eaee, #c9ced6);
+}
+
+.cara--arriba {
+    transform: rotateX(90deg) translateZ(calc(var(--h) / 2));
+}
+
+.cara--abajo {
+    transform: rotateX(-90deg) translateZ(calc(var(--h) / 2));
+}
+
+/* Brillo de plástico encima de la portada y la contraportada */
+.cara--frente::after,
+.cara--detras::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, rgb(255 255 255 / 0.28), transparent 32%, transparent 70%, rgb(255 255 255 / 0.1));
+    pointer-events: none;
+}
+
+/* Franja de la plataforma (arriba de portada y contraportada) */
+.banda {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--banda);
+    padding: 0 calc(var(--w) * 0.04);
+    background: var(--color-plataforma, #111);
+    color: #fff;
+    font-size: calc(var(--w) * 0.042);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.banda small {
+    font-size: 0.75em;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    opacity: 0.85;
+}
+
+/* Portada */
+.portada {
+    position: relative;
+    height: calc(var(--h) - var(--banda));
+    background: var(--color-genero, #444);
+}
+
+.portada img {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Portadas cuadradas o apaisadas: se ven enteras y el hueco se rellena
+   con la misma imagen ampliada y desenfocada (sin bandas negras) */
+.portada {
+    overflow: hidden;
+}
+
+.portada.con-fondo::before,
+.tarjeta__img.con-fondo::before {
+    content: "";
+    position: absolute;
+    inset: -15%;
+    z-index: 1;
+    background: var(--fondo-portada) center / cover;
+    filter: blur(14px) saturate(1.15);
+}
+
+.portada img.ancha,
+.tarjeta__img img.ancha {
+    position: relative;
+    z-index: 2;
+    object-fit: contain;
+}
+
+/* Portada dibujada para los juegos sin imagen */
+.portada__dibujo {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: calc(var(--w) * 0.07);
+    color: #fff;
+}
+
+.portada__dibujo::before {
+    content: "";
+    position: absolute;
+    width: 130%;
+    aspect-ratio: 1;
+    left: -40%;
+    top: 4%;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.13);
+}
+
+.portada__inicial {
+    position: absolute;
+    right: calc(var(--w) * 0.05);
+    top: 0;
+    font-size: calc(var(--w) * 0.75);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    color: rgb(255 255 255 / 0.2);
+}
+
+.portada__titulo {
+    position: relative;
+    margin: 0;
+    font-size: calc(var(--w) * 0.085);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+}
+
+.portada__genero {
+    position: relative;
+    margin: 6px 0 0;
+    font-size: calc(var(--w) * 0.045);
+    opacity: 0.85;
+}
+
+/* Lomo */
+.lomo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: calc(var(--w) * 0.03) 0;
+    background: var(--color-plataforma, #111);
+    color: #fff;
+}
+
+.lomo__plataforma {
+    font-size: calc(var(--d) * 0.32);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.lomo__titulo {
+    flex: 1;
+    margin: calc(var(--w) * 0.03) 0;
+    overflow: hidden;
+    writing-mode: vertical-rl;
+    font-size: calc(var(--d) * 0.42);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.lomo__sello {
+    display: grid;
+    place-items: center;
+    width: calc(var(--d) * 0.62);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--acento);
+    font-size: calc(var(--d) * 0.34);
+    font-weight: 700;
+}
+
+/* Contraportada (como la parte de atrás de una caja de verdad) */
+.contra {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #fff;
+    color: #111;
+    font-size: calc(var(--w) * 0.028);
+    line-height: 1.35;
+}
+
+.contra__cuerpo {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: calc(var(--w) * 0.03);
+    margin: calc(var(--w) * 0.03);
+    margin-bottom: 0;
+    padding: calc(var(--w) * 0.035);
+    background: #0d0d0d;
+    color: #eee;
+}
+
+.contra__presenta {
+    margin: 0;
+    text-align: center;
+    font-size: calc(var(--w) * 0.03);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.contra__presenta strong {
+    color: #fff;
+}
+
+.contra__capturas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: calc(var(--w) * 0.02);
+}
+
+.contra__capturas img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    background: #222;
+}
+
+.contra__sinopsis {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 9;
+    line-clamp: 9;
+    text-align: center;
+    font-size: calc(var(--w) * 0.032);
+}
+
+.contra__sinopsis strong {
+    color: #fff;
+}
+
+.contra__iconos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: calc(var(--w) * 0.015);
+}
+
+.contra__icono {
+    padding: calc(var(--w) * 0.015);
+    border-radius: 3px;
+    background: #c8e64a;
+    color: #111;
+    text-align: center;
+    font-size: calc(var(--w) * 0.025);
+    line-height: 1.2;
+}
+
+.contra__icono b {
+    display: block;
+    font-size: calc(var(--w) * 0.032);
+}
+
+.contra__pie {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: calc(var(--w) * 0.03);
+    align-items: end;
+    padding: calc(var(--w) * 0.03);
+}
+
+.contra__legal {
+    margin: 0;
+    color: #555;
+    font-size: calc(var(--w) * 0.019);
+    line-height: 1.3;
+}
+
+.contra__marcas {
+    display: grid;
+    justify-items: end;
+    gap: calc(var(--w) * 0.02);
+}
+
+.pegi {
+    display: grid;
+    place-items: center;
+    width: calc(var(--w) * 0.13);
+    aspect-ratio: 1 / 1.15;
+    border-radius: 2px;
+    background: var(--color-pegi, #6ab023);
+    color: #fff;
+    font-size: calc(var(--w) * 0.07);
+    font-weight: 800;
+    line-height: 1;
+}
+
+.pegi small {
+    font-size: calc(var(--w) * 0.018);
+    font-weight: 600;
+}
+
+.codigo {
+    display: block;
+    width: calc(var(--w) * 0.34);
+    background: #fff;
+}
+
+/* Botones Portada / Lomo / Contraportada */
+.vistas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    padding: 5px;
+    border-radius: 999px;
+    background: var(--hundido);
+}
+
+.vista {
+    min-height: 38px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--texto-2);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color .2s, color .2s;
+}
+
+.vista:hover {
+    color: var(--texto);
+}
+
+.vista.activa {
+    background: var(--texto);
+    color: #fff;
+}
+
+.vista:focus-visible,
+.version:focus-visible,
+.tarjeta:focus-visible,
+.buscador:focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 3px;
+}
+
+.pista {
+    margin: 0;
+    color: var(--texto-tenue);
+    font-size: 0.82rem;
+}
+
+/* ---------- Datos del juego ---------- */
+
+.datos {
+    display: grid;
+    gap: 20px;
+}
+
+.datos__eyebrow {
+    margin: 0;
+    color: var(--texto-2);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.datos__titulo {
+    margin: 0;
+    font-size: clamp(2.2rem, 5vw, 4.2rem);
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+    text-wrap: balance;
+}
+
+.datos__titulo span {
+    color: var(--texto-tenue);
+}
+
+.versiones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.version {
+    min-height: 36px;
+    padding: 0 14px;
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background: var(--hundido);
+    color: var(--texto);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color .2s, border-color .2s;
+}
+
+.version:hover {
+    background: var(--hundido-2);
+}
+
+.version.activa {
+    border-color: var(--texto);
+    background: var(--superficie);
+}
+
+.precios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.precio {
+    flex: 1 1 150px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: var(--superficie);
+}
+
+.precio span {
+    display: block;
+    color: var(--texto-2);
+    font-size: 0.8rem;
+}
+
+.precio strong {
+    display: block;
+    margin-top: 4px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+}
+
+.precio small {
+    color: var(--texto-tenue);
+    font-size: 0.78rem;
+}
+
+.precio--nuevo strong {
+    color: var(--acento);
+}
+
+.hechos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px 20px;
+    margin: 0;
+}
+
+.hechos dt {
+    color: var(--texto-tenue);
+    font-size: 0.78rem;
+}
+
+.hechos dd {
+    margin: 3px 0 0;
+    font-weight: 600;
+}
+
+.sinopsis {
+    max-width: 60ch;
+    margin: 0;
+    color: var(--texto-2);
+    line-height: 1.6;
+}
+
+/* ---------- Catálogo de todos los juegos ---------- */
+
+.catalogo {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--margen) 56px;
+}
+
+.catalogo__cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-top: 24px;
+    border-top: 1px solid var(--hundido-2);
+}
+
+.catalogo__cabecera h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+}
+
+.buscador {
+    width: min(100%, 280px);
+    min-height: 44px;
+    padding: 0 16px;
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background: var(--hundido);
+    color: var(--texto);
+}
+
+.buscador:focus {
+    border-color: var(--texto);
+    background: #fff;
+    outline: none;
+}
+
+.rejilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 22px 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tarjeta {
+    display: grid;
+    gap: 8px;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.tarjeta__img {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 2 / 3;
+    border-radius: 10px;
+    background: var(--color-genero, #444);
+    transition: transform .5s var(--curva), box-shadow .5s var(--curva);
+}
+
+.tarjeta__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tarjeta__inicial {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: rgb(255 255 255 / 0.4);
+    font-size: 3.4rem;
+    font-weight: 700;
+}
+
+.tarjeta:hover .tarjeta__img {
+    transform: translateY(-4px) rotate(-1deg);
+    box-shadow: 0 18px 30px -18px rgb(17 17 17 / 0.5);
+}
+
+.tarjeta.activa .tarjeta__img {
+    outline: 3px solid var(--acento);
+    outline-offset: 3px;
+}
+
+.tarjeta__titulo {
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.tarjeta__plataformas {
+    display: block;
+    margin-top: 2px;
+    color: var(--texto-tenue);
+    font-size: 0.74rem;
+    font-weight: 400;
+}
+
+.vacio {
+    grid-column: 1 / -1;
+    color: var(--texto-2);
+}
+
+/* Móvil: caja arriba y datos debajo */
+@media (max-width: 800px) {
+    .ficha {
+        grid-template-columns: 1fr;
+    }
+
+    .escena {
+        --w: min(230px, 60vw);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .caja.suave,
+    .tarjeta__img {
+        transition: none;
+    }
+}
